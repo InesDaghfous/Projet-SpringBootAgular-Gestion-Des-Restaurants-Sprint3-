@@ -1,0 +1,57 @@
+<div class="container">
+
+  <!-- Section 1 : Recherche via BOUTON (API) -->
+  <form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2 mt-2">
+      <label>Nom Restaurant (bouton)</label>
+      <input type="text"
+             class="form-control"
+             [(ngModel)]="nomRestaurant"
+             name="nomRestaurant">
+      <button type="button"
+              (click)="rechercherRests()"
+              class="btn btn-primary mb-2 ml-2">
+        Rechercher
+      </button>
+    </div>
+  </form>
+
+  <!-- Section 2 : Recherche via PIPE (frappe en temps réel) -->
+  <form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2 mt-2">
+      <label>Nom Restaurant en tapant (Pipe)</label>
+      <input [(ngModel)]="searchTerm"
+             name="searchTerm"
+             class="form-control">
+    </div>
+  </form>
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <table class="table table-striped">
+        <tr>
+          <th>Id</th>
+          <th>Nom</th>
+          <th>Note</th>
+          <th>Date Ouverture</th>
+          <th>Spécialité</th>
+        </tr>
+
+        @for (restaurant of restaurants | searchFilter: searchTerm; track restaurant.idRestaurant)
+        {
+          <tbody>
+            <tr>
+              <td>{{restaurant.idRestaurant}}</td>
+              <td>{{restaurant.nomRestaurant}}</td>
+              <td>{{restaurant.noteRestaurant}}</td>
+              <td>{{restaurant.dateOuverture | date:'dd/MM/yyyy'}}</td>
+              <td>{{ restaurant.specialite?.nomSpec || restaurant.nomSpec || 'PAS DE SPÉCIALITÉ' }}</td>
+            </tr>
+          </tbody>
+        }
+
+      </table>
+    </div>
+  </div>
+
+</div>
