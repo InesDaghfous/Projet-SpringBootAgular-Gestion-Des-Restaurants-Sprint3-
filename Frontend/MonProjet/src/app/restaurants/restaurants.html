@@ -1,13 +1,11 @@
 <div class="container">
-  <div class="card shadow mb-4">                   
-    <div class="card-body"> 
+  <div class="card shadow mb-4">
+    <div class="card-body">
 
-  
       <div *ngIf="restaurants.length === 0">
         <h1>Aucun restaurant trouvé !</h1>
       </div>
 
-    
       <div *ngIf="restaurants.length > 0">
         <h1>Nombre : {{ restaurants.length }}</h1>
         <table class="table table-striped">
@@ -20,8 +18,6 @@
               <th>Date Ouverture</th>
               <th>Specialite</th>
               <th>Actions</th>
-              
-              
             </tr>
           </thead>
           <tbody>
@@ -32,10 +28,11 @@
               <td>{{ restaurant.noteRestaurant }}</td>
               <td>{{ restaurant.dateOuverture | date:'dd/MM/yyyy' }}</td>
               <td>{{ restaurant.specialite?.nomSpec || restaurant.nomSpec || 'PAS DE SPÉCIALITÉ' }}</td>
-               <td><a class="btn btn-danger" (click)="supprimerRestaurant(restaurant)">Supprimer</a>
-              </td> 
-               <td><a class="btn btn-success" [routerLink]="['/updateRestaurant',restaurant.idRestaurant]">Modifier</a></td>
-            </tr>                                  
+              @if(authService.isAdmin()) {
+                <td><a class="btn btn-danger" (click)="supprimerRestaurant(restaurant)">Supprimer</a></td>
+                <td><a class="btn btn-success" [routerLink]="['/updateRestaurant', restaurant.idRestaurant]">Modifier</a></td>
+              }
+            </tr>
           </tbody>
         </table>
       </div>

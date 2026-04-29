@@ -1,6 +1,9 @@
 package com.ines.restaurants.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +22,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RoleRepository roleRep;
 
-    // Suppression de BCryptPasswordEncoder
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public User saveUser(User user) {
-        // Plus d'encodage des mots de passe
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRep.save(user);
     }
 
@@ -31,7 +35,6 @@ public class UserServiceImpl implements UserService {
     public User addRoleToUser(String username, String rolename) {
         User usr = userRep.findByUsername(username);
         Role r = roleRep.findByRole(rolename);
-
         if (usr != null && r != null) {
             usr.getRoles().add(r);
         }
@@ -56,5 +59,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         return userRep.findByUsername(username);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRep.findAll();
     }
 }
