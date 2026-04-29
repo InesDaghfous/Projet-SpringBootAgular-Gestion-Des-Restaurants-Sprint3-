@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <div class="row">
+
+    <!-- Composant Ajout / Modification -->
+    <div class="col-sm-4 col-md-4 col-lg-4 mb-4">
+      <app-update-specialite
+        [specialite]="updatedSpec"
+        [ajout]="ajout"
+        (specialiteUpdated)="specialiteUpdated($event)">
+      </app-update-specialite>
+    </div>
+
+    <!-- Table de liste -->
+    <div class="col-sm-8 col-md-8 col-lg-8">
+      <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Liste des Spécialités</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>Id</th>
+                <th>Nom Spécialité</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (spec of specialites; track spec.idSpec) {
+                <tr>
+                  <td>{{ spec.idSpec }}</td>
+                  <td>{{ spec.nomSpec }}</td>
+                  <td>
+                    <a class="btn btn-warning btn-sm me-2" (click)="updateSpec(spec)">Éditer</a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+          @if (specialites.length === 0) {
+            <p class="text-center text-muted">Aucune spécialité trouvée.</p>
+          }
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

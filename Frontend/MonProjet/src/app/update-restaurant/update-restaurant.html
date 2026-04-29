@@ -1,0 +1,105 @@
+<div class="container">
+  <div>
+    <h2>Modifier un Restaurant :</h2>             
+  </div>
+
+  <form>         
+
+    <div class="col-sm-2 col-md-2 col-lg-2">
+      <label>ID Restaurant</label>
+      <input readonly
+             type="text"
+             [(ngModel)]="currentRestaurant.idRestaurant"
+             name="idRestaurant"
+             class="form-control">
+    </div>
+         
+    <div class="col-sm-4 col-md-4 col-lg-4">
+      <label>Nom Restaurant</label>
+      <input type="text"
+             [(ngModel)]="currentRestaurant.nomRestaurant"
+             name="nomRestaurant"
+             class="form-control">
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-4">
+      <label>Note</label>
+      <input type="text"
+             [(ngModel)]="currentRestaurant.noteRestaurant"
+             name="note"
+             class="form-control">
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-4">
+      <label>Date Ouverture</label>
+      <input type="date"
+             [ngModel]="currentRestaurant.dateOuverture | date: 'yyyy-MM-dd'"
+             (ngModelChange)="currentRestaurant.dateOuverture = $event"
+             name="dateOuverture"
+             class="form-control">
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-4">
+      <label>Spécialité</label>
+
+      <select class="form-control form-control-lg"
+              id="selectedSpecialite"
+              name="selectedSpecialite"
+              [(ngModel)]="selectedSpecialite"
+              [compareWith]="compareSpecialites">
+
+        @for(spec of specialites; track spec.idSpec) {
+          <option [ngValue]="spec">
+            {{spec.nomSpec}}
+          </option>
+        }
+
+      </select>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-4 mt-3">
+      <label>Image :</label>
+      <input type="file" (change)="onImageUpload($event)" class="form-control">
+      @if(isImageUpdated) {
+        <img [src]="myImage" class="img-fluid mt-2" style="height:100px;">
+      }
+    </div>
+
+    <div class="mt-2">
+      <button type="submit" (click)="onAddImageProduit()" class="btn btn-success">Ajouter Image</button>
+    </div>
+
+    <div class="card shadow mb-4 mt-3">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Images</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for(img of currentRestaurant.images; track img.idImage) {
+            <tr>
+              <td>
+                <img class="card-img-top img-responsive" src="{{'data:' + img.type + ';base64,' + img.image}}"
+                  style="height :50px;width:100px">
+              </td>
+              <td style="width:20%">
+                <a class="btn btn-danger" (click)="supprimerImage(img)">Supprimer</a>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <button type="button" (click)="updateRestaurant()" class="btn btn-primary">
+        Modifier le restaurant
+      </button>
+    </div>  
+
+  </form>
+</div>
